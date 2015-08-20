@@ -1,5 +1,5 @@
 # Project Description
-This is a simple project that reads data from a data source (CSV file) and plots it onto a leaflet map.
+This is a simple project that reads data from a data source (CSV file) and plots it onto a leaflet map. It is a Spring Boot project built with Gradle as the build system within a Jetty container. Spring Initializr was used to get a template app up and running fairly quickly. AngularJS is used on the front-end along with LeafletJS. 
 
 ## Build/Run Instructions
 * Open the terminal and run the following command at the root of the project to fetch front-end dependencies:
