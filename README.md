@@ -6,7 +6,7 @@ This is a simple project that reads data from a data source (CSV file) and plots
 ```
 bower install
 ```
-** Select option 1 if you get asked about leaflet version
+* Select option 1 if you get asked about leaflet version
 * Run the following command to build the project:
 ```
 gradle clean build
