@@ -19,7 +19,7 @@ public class AgentsService {
 
     public List<Agent> getAgents() {
         Iterable<CSVRecord> records = csvDataSource.readRecords("data/cc-maps-data-set.csv");
-        List<Agent> agents = new ArrayList<>();
+        List<Agent> agents = new ArrayList<Agent>();
 
         for (CSVRecord record : records) {
             Agent agent = new Agent(
