@@ -1,16 +1,15 @@
-angular
-    .module('agentService', [])
-    .factory("AgentService", function($http, $q) {
+'use strict';
 
-        return {
-            getAllAgents: function() {
-                var defer = $q.defer();
-                $http.get('/agents', { cache: 'true'})
-                    .success(function(data) {
-                        defer.resolve(data);
-                    });
+class AgentService {
+    constructor($http) {
+        this.$http = $http;
+    }
 
-                return defer.promise;
-            }
-        };
-    });
+    getAgents() {
+        return this.$http.get('/agents').then(result => result.data);
+    }
+}
+
+AgentService.$inject = ['$http'];
+
+export default AgentService;

@@ -1,0 +1,27 @@
+{
+  "name": "es6-angular-leaflet-map",
+  "version": "1.0.0",
+  "description": "Plotting data on a leaflet map using AngularJS and ES6",
+  "scripts": {
+    "build": "gulp build"
+  },
+  "author": "Hany Elemary <hany.elemary@gmail.com>",
+  "devDependencies": {
+    "glob": "^6.0.1",
+    "event-stream": "^3.3.2",
+    "gulp-bower": "0.0.10",
+    "gulp-concat": "^2.6.0",
+    "require-dir": "^0.1.0",
+    "rimraf": "^2.4.2",
+    "babel-core": "^6.1.21",
+    "babel-preset-es2015": "^6.1.18",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "gulp": "^3.9.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.7",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "private": true
+}

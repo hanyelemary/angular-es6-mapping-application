@@ -1,33 +1,15 @@
-angular
-    .module('mapConfig', [])
-    .constant("mappingConfig", {
-        icons: {
-            red_icon: {
-                iconUrl: '/images/marker-icon-red.png',
-                iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-                popupAnchor:  [-8, -90] // point from which the popup should open relative to the iconAnchor
-            }
-        },
-        center: {
-            lat: 39.50,
-            lng: -98.35,
-            zoom: 4
-        },
-        layers: {
-            baselayers: {
-                googleTerrain: {
-                    name: 'Google Terrain',
-                    layerType: 'TERRAIN',
-                    type: 'google'
-                }
-            }
-        },
-        defaults: {
-            scrollwheel: false
-        },
-        legend: {
-            colors: ['#2981ca', '#cf4746'],
-            labels: ['Male', 'Female']
-        },
-        markers: {}
-    });
+
+'use strict';
+
+var MapConfig = {
+    url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+    attribution: 'Tiles by <a href="http://mapc.org">MAPC</a>, Data by <a href="http://mass.gov/mgis">MassGIS</a>',
+    imagePath: '../../images/marker-icon-red.png',
+    init: {
+        latitude: 39.50,
+        longitude: -98.35,
+        zoom: 4
+    }
+};
+
+export default MapConfig;
