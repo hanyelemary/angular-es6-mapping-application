@@ -111,11 +111,19 @@ Object.defineProperty(exports, "__esModule", {
 var MapConfig = {
     url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
     attribution: 'Tiles by <a href="http://mapc.org">MAPC</a>, Data by <a href="http://mass.gov/mgis">MassGIS</a>',
-    imagePath: '../../images/marker-icon-red.png',
+    //imagePath: '../../bower_components/leaflet/dist/images/',
     init: {
         latitude: 39.50,
         longitude: -98.35,
         zoom: 4
+    },
+    male: {
+        color: '#2981ca',
+        label: 'Male'
+    },
+    female: {
+        color: '#cf4746',
+        label: 'Female'
     }
 };
 
@@ -149,68 +157,43 @@ var Map = (function () {
         this.map = _leaflet2.default.map('map').setView([_map2.default.init.latitude, _map2.default.init.longitude], _map2.default.init.zoom);
 
         _leaflet2.default.Icon.Default.imagePath = _map2.default.imagePath;
-
-        // load a tile layer
         _leaflet2.default.tileLayer(_map2.default.url, { attribution: _map2.default.attribution }).addTo(this.map);
-        _leaflet2.default.geoJson({
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "Feature",
-                "properties": {
-                    "id": "krhy93as",
-                    "title": "Make it Mount Pleasant",
-                    "marker-color": "#AA0000",
-                    "marker-size": "medium",
-                    "marker-zoom": "17"
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [-77.038659, 38.931567]
-                }
-            }]
-        }).addTo(this.map);
+
+        var legend = _leaflet2.default.control({ position: 'bottomright' });
+
+        legend.onAdd = function (map) {
+
+            var div = _leaflet2.default.DomUtil.create('div', 'info legend');
+            div.innerHTML = '<i style="background:' + _map2.default.male.color + '"></i>' + _map2.default.male.label + '<br/>' + '<i style="background:' + _map2.default.female.color + '"></i>' + _map2.default.female.label;
+
+            return div;
+        };
+
+        legend.addTo(this.map);
     }
 
     _createClass(Map, [{
         key: 'geoJson',
         value: function geoJson(json) {
-            _leaflet2.default.geoJson(json).addTo(this.map);
+            _leaflet2.default.geoJson(json, {
+                onEachFeature: function onEachFeature(feature, layer) {
+                    layer.bindPopup(feature.properties.popupContent);
+                },
+                pointToLayer: function pointToLayer(feature, latlng) {
+                    var circleMarker = _leaflet2.default.circleMarker(latlng, {
+                        radius: 8,
+                        fillColor: feature.properties.gender == "Female" ? _map2.default.female.color : _map2.default.male.color,
+                        color: "#000",
+                        weight: 1,
+                        popupAnchor: [15, 5],
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    });
+
+                    return circleMarker;
+                }
+            }).addTo(this.map);
         }
-
-        //static config() {
-        //    return {
-        //        icons: {
-        //            red_icon: {
-        //                iconUrl: '/images/marker-icon-red.png',
-        //                iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-        //                popupAnchor:  [-8, -90] // point from which the popup should open relative to the iconAnchor
-        //            }
-        //        },
-        //        center: {
-        //            lat: 39.50,
-        //            lng: -98.35,
-        //            zoom: 4
-        //        },
-        //        layers: {
-        //            baselayers: {
-        //                googleTerrain: {
-        //                    name: 'Google Terrain',
-        //                    layerType: 'TERRAIN',
-        //                    type: 'google'
-        //                }
-        //            }
-        //        },
-        //        defaults: {
-        //            scrollwheel: false
-        //        },
-        //        legend: {
-        //            colors: ['#2981ca', '#cf4746'],
-        //            labels: ['Male', 'Female']
-        //        },
-        //        markers: {}
-        //    }
-        //}
-
     }]);
 
     return Map;
@@ -249,9 +232,8 @@ var MapService = (function () {
                 "type": "FeatureCollection",
                 "features": data.map(this.transform) || []
             };
-            console.log(json);
 
-            this.map.geoJson(data);
+            this.map.geoJson(json);
         }
     }, {
         key: 'transform',
@@ -260,11 +242,8 @@ var MapService = (function () {
                 "type": "Feature",
                 "properties": {
                     "id": index,
-                    "title": object.name || "",
-                    "description": object.name || "",
-                    "marker-color": "#AA0000",
-                    "marker-size": "medium",
-                    "marker-zoom": "17"
+                    "popupContent": object.name || "",
+                    "gender": object.gender || ""
                 },
                 "geometry": {
                     "type": "Point",
@@ -272,46 +251,6 @@ var MapService = (function () {
                 }
             };
         }
-
-        //{
-        //    "type": "FeatureCollection",
-        //    "features": [
-        //{
-        //    "type": "Feature",
-        //    "properties": {
-        //        "id": "krhy93as",
-        //        "title": "Make it Mount Pleasant",
-        //        "description": "<a href=\"http://www.mtpleasantdc.com/makeitmtpleasant\" target=\"_blank\" title=\"Opens in a new window\">Make it Mount Pleasant</a> is a handmade and vintage market and afternoon of live entertainment and kids activities. 12:00-6:00 p.m.",
-        //        "marker-color": "#AA0000",
-        //        "marker-size": "medium",
-        //        "marker-symbol": "shop",
-        //        "marker-zoom": "17"
-        //    },
-        //    "geometry": {
-        //        "type": "Point",
-        //        "coordinates": [
-        //            -77.038659,
-        //            38.931567
-        //        ]
-        //    }
-        //}
-        //    ]
-        //}
-
-        //plotData(data) {
-        //    let length = data.length || 0,
-        //        geoPoints = {};
-        //    for (let i = 0; i < length; i++) {
-        //        geoPoints[data[i].name] = {
-        //            lat: data[i].latitude,
-        //            lng: data[i].longitude,
-        //            message: data[i].name,
-        //            icon: data[i].gender === "Female" ? this.config.icons.red_icon : {}
-        //        }
-        //    }
-        //    return geoPoints;
-        //}
-
     }]);
 
     return MapService;

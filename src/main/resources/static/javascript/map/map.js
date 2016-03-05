@@ -6,74 +6,49 @@ import mapConfig from './map.config';
 
 class Map {
     constructor() {
-        this.map = L.map('map').setView(
-            [mapConfig.init.latitude, mapConfig.init.longitude], mapConfig.init.zoom);
+        this.map = L.map('map').setView([
+            mapConfig.init.latitude,
+            mapConfig.init.longitude
+        ], mapConfig.init.zoom);
 
         L.Icon.Default.imagePath = mapConfig.imagePath;
-
-        // load a tile layer
         L.tileLayer(mapConfig.url, {attribution: mapConfig.attribution}).addTo(this.map);
-        L.geoJson({
-            "type": "FeatureCollection",
-            "features": [
-                {
-                    "type": "Feature",
-                    "properties": {
-                        "id": "krhy93as",
-                        "title": "Make it Mount Pleasant",
-                        "marker-color": "#AA0000",
-                        "marker-size": "medium",
-                        "marker-zoom": "17"
-                    },
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [
-                            -77.038659,
-                            38.931567
-                        ]
-                    }
-                }
-            ]
-        }).addTo(this.map);
+
+        let legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function (map) {
+
+            let div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML =
+                '<i style="background:' + mapConfig.male.color + '"></i>' + mapConfig.male.label + '<br/>' +
+                '<i style="background:' + mapConfig.female.color + '"></i>' + mapConfig.female.label;
+
+            return div;
+        };
+
+        legend.addTo(this.map);
     }
 
     geoJson(json) {
-        L.geoJson(json).addTo(this.map);
-    }
+        L.geoJson(json, {
+            onEachFeature: (feature, layer) => {
+                layer.bindPopup(feature.properties.popupContent);
+            },
+            pointToLayer: function(feature, latlng) {
+                let circleMarker = L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: feature.properties.gender == "Female"? mapConfig.female.color : mapConfig.male.color,
+                    color: "#000",
+                    weight: 1,
+                    popupAnchor: [15, 5],
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
 
-    //static config() {
-    //    return {
-    //        icons: {
-    //            red_icon: {
-    //                iconUrl: '/images/marker-icon-red.png',
-    //                iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    //                popupAnchor:  [-8, -90] // point from which the popup should open relative to the iconAnchor
-    //            }
-    //        },
-    //        center: {
-    //            lat: 39.50,
-    //            lng: -98.35,
-    //            zoom: 4
-    //        },
-    //        layers: {
-    //            baselayers: {
-    //                googleTerrain: {
-    //                    name: 'Google Terrain',
-    //                    layerType: 'TERRAIN',
-    //                    type: 'google'
-    //                }
-    //            }
-    //        },
-    //        defaults: {
-    //            scrollwheel: false
-    //        },
-    //        legend: {
-    //            colors: ['#2981ca', '#cf4746'],
-    //            labels: ['Male', 'Female']
-    //        },
-    //        markers: {}
-    //    }
-    //}
+                return circleMarker;
+            }
+        }).addTo(this.map);
+    }
 }
 
 export default Map;
