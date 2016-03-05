@@ -9,9 +9,9 @@ class AgentController {
     }
 
     init() {
-        var vm = this;
+        var viewModel = this;
         this.agentService.getAgents().then(agents => {
-            vm.agents = agents;
+            viewModel.agents = agents;
             this.mapService.plot(agents);
         });
     }
