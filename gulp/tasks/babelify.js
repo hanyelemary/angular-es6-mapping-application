@@ -10,8 +10,6 @@ var gulp = require('gulp'),
 function build() {
     const bundler = browserify({
         entries: [
-            basePath + 'model/agent.js',
-            basePath + 'model/agentList.js',
             basePath + 'map/map.service.js',
             basePath + 'map/map.js',
             basePath + 'agents.controller.js',
