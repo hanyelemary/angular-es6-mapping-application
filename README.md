@@ -4,6 +4,7 @@ This is a simple project that reads data from a data source (CSV file) and plots
 ## Build/Run Instructions
 * Open the terminal and run the following command at the root of the project to fetch front-end dependencies:
 ```
+npm install
 bower install
 ```
 * Select option 1 if you get asked about leaflet version
