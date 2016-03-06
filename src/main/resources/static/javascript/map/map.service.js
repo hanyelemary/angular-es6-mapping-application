@@ -34,6 +34,10 @@ class MapService {
             }
         }
     }
+
+    pointToLocation(lat, lng, name) {
+        this.map.popUp(lat, lng, name);
+    }
 }
 
 export default MapService;

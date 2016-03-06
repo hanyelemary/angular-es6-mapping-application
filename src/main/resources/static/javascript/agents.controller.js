@@ -5,15 +5,19 @@ class AgentController {
     constructor(agentService, mapService) {
         this.agentService = agentService;
         this.mapService = mapService;
-        this.init();
-    }
 
-    init() {
-        var viewModel = this;
         this.agentService.getAgents().then(agents => {
-            viewModel.agents = agents;
+            this.agents = agents;
             this.mapService.plot(agents);
         });
+    }
+
+    /**
+     * Locates an agent on the map.
+     * @param agent - agent JSON object.
+     */
+    locateAgent(agent) {
+        this.mapService.pointToLocation(agent.latitude, agent.longitude, agent.name);
     }
 }
 

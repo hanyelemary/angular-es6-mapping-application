@@ -1,10 +1,10 @@
-
 'use strict';
 
 import L from '../../bower_components/leaflet/dist/leaflet';
 import mapConfig from './map.config';
 
 class Map {
+
     constructor() {
         this.map = L.map('map').setView([
             mapConfig.init.latitude,
@@ -29,6 +29,10 @@ class Map {
         legend.addTo(this.map);
     }
 
+    /**
+     * Plot GEO data on the map.
+     * @param json - json string - the data to plot
+     */
     geoJson(json) {
         L.geoJson(json, {
             onEachFeature: (feature, layer) => {
@@ -48,6 +52,20 @@ class Map {
                 return circleMarker;
             }
         }).addTo(this.map);
+    }
+
+    /**
+     * Place a pop up on a given location/point on the map.
+     *
+     * @param lat - latitude
+     * @param lng - longitude
+     * @param popUpContent - popUpContent to appear in the pop up box.
+     */
+    popUp(lat, lng, popUpContent) {
+        L.popup()
+            .setLatLng(L.latLng(lat, lng))
+            .setContent(popUpContent)
+            .openOn(this.map);
     }
 }
 

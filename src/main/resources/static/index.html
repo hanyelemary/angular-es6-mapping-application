@@ -69,7 +69,7 @@
             <span>Agent Names</span>
         </header>
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-          <a ng-model="agent" ng-click="locateAgent(agent)" ng-repeat="agent in viewModel.agents | filter:searchText" class="mdl-navigation__link" href="">
+          <a ng-model="agent" ng-click="viewModel.locateAgent(agent)" ng-repeat="agent in viewModel.agents | filter:searchText" class="mdl-navigation__link" href="">
               {{agent.name}}
           </a>
         </nav>
